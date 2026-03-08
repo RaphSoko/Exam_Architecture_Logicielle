@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from "@nestjs/common";
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException, ConflictException } from "@nestjs/common";
 import { UserEntity } from "src/modules/users/domain/entities/user.entity";
 import { PostEntity } from "../../domain/entities/post.entity";
 import { PostRepository } from "../../domain/repositories/post.repository";
@@ -11,19 +11,19 @@ export class UpdatePostSlugUseCase {
 
   async execute(id: string, newSlug: string, currentUser: UserEntity): Promise<PostEntity> {
     const post = await this.postRepository.getPostById(id);
-    if (!post) throw new NotFoundException('Post introuvable');
+    if (!post) throw new NotFoundException('Post does not exist');
 
     if (post.authorId !== currentUser.id && currentUser.getRole() !== 'admin') {
-      throw new ForbiddenException("Action non autorisée");
+      throw new ForbiddenException("You are not the author of this post or an admin");
     }
 
     if (!this.SLUG_REGEXP.test(newSlug)) {
-      throw new BadRequestException('Le format du slug est invalide');
+      throw new BadRequestException('Invalid slug format');
     }
 
     const existing = await this.postRepository.findBySlug(newSlug);
     if (existing && existing.id !== id) {
-      throw new BadRequestException('Ce slug est déjà utilisé par un autre article');
+      throw new ConflictException('Slug already used');
     }
 
     post.updateSlug(newSlug);
