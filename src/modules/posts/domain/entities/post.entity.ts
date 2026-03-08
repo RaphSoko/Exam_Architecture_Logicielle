@@ -9,6 +9,7 @@ export class PostEntity {
   private _content: PostContent;
   private _authorId: string;
   private _status: PostStatus;
+  private _slug: string;
 
   private constructor(
     readonly id: string,
@@ -16,11 +17,13 @@ export class PostEntity {
     content: PostContent,
     authorId: string,
     status: PostStatus,
+    slug: string,
   ) {
     this._title = title;
     this._content = content;
     this._authorId = authorId;
     this._status = status;
+    this._slug = slug;
   }
 
   public get status() {
@@ -38,6 +41,7 @@ export class PostEntity {
       new PostContent(input.content as string),
       input.authorId as string,
       input.status as PostStatus,
+      input.slug as string,
     );
   }
 
@@ -48,6 +52,7 @@ export class PostEntity {
       content: this._content.toString(),
       status: this._status,
       authorId: this._authorId,
+      slug: this._slug,
     };
   }
 
@@ -55,6 +60,7 @@ export class PostEntity {
     title: string,
     content: string,
     authorId: string,
+    slug: string,
   ): PostEntity {
     return new PostEntity(
       v4(),
@@ -62,6 +68,7 @@ export class PostEntity {
       new PostContent(content),
       authorId,
       'draft',
+      slug,
     );
   }
 
@@ -74,4 +81,9 @@ export class PostEntity {
       this._content = new PostContent(content);
     }
   }
+  
+  public updateSlug(newSlug: string) {
+    this._slug = newSlug;
+    //this._updatedAt = new Date();
+ }
 }

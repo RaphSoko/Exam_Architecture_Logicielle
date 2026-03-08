@@ -1,7 +1,6 @@
 export class CreatePostDto {
-  title: string;
-
-  content: string;
-
-  authorId: string;
+  readonly title: string;
+  readonly content: string;
+  readonly authorId: string;
+  readonly slug?: string;
 }

@@ -36,4 +36,11 @@ export class InMemoryPostRepository implements PostRepository {
   public deletePost(id: string) {
     this.posts = this.posts.filter((post) => post.id !== id);
   }
+
+  public async findBySlug(slug: string) {
+    const post = this.posts.find((post) => post.slug === slug);
+    if(post) {
+      return PostEntity.reconstitute(post);
+    }
+  }
 }
