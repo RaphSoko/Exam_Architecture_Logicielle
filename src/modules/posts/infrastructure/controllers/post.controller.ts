@@ -21,7 +21,9 @@ import { GetPostsUseCase } from '../../application/use-cases/get-posts.use-case'
 import { UpdatePostUseCase } from '../../application/use-cases/update-post.use-case';
 import { GetPostBySlugUseCase } from '../../application/use-cases/find-by-slug.use-case';
 import { UpdatePostSlugUseCase } from '../../application/use-cases/update-post-slug.use-case';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('posts')
 @Controller('posts')
 export class PostController {
   constructor(
@@ -34,6 +36,7 @@ export class PostController {
     private readonly updatePostSlugUseCase: UpdatePostSlugUseCase,
   ) {}
 
+  @ApiOperation({ summary: 'Get all posts' })
   @Get()
   public async getPosts() {
     const posts = await this.getPostsUseCase.execute();
@@ -41,6 +44,11 @@ export class PostController {
     return posts.map((p) => p.toJSON());
   }
 
+  @ApiOperation({ summary: 'Get a post by slug' })
+  @ApiResponse({ status: 200, description: 'The post has been successfully retrieved.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 404, description: 'Post not found.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Get(':slug')
   @UseGuards(JwtAuthGuard) 
   public async getBySlug(
@@ -54,6 +62,7 @@ export class PostController {
 
 
   //Not very useful anymore since it will be confused with the slug route
+  @ApiOperation({ summary: 'Get a post by ID' })
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   public async getPostById(
@@ -65,6 +74,7 @@ export class PostController {
     return post?.toJSON();
   }
 
+  @ApiOperation({ summary: 'Create a new post' })
   @Post()
   @UseGuards(JwtAuthGuard)
   public async createPost(
@@ -77,6 +87,7 @@ export class PostController {
     );
   }
 
+  @ApiOperation({ summary: 'Update an existing post' })
   @Patch(':id')
   public async updatePost(
     @Param('id') id: string,
@@ -84,6 +95,14 @@ export class PostController {
   ) {
     return this.updatePostUseCase.execute(id, input);
   }
+
+  @ApiOperation({ summary: 'Update a post slug' })
+  @ApiResponse({ status: 200, description: 'The post slug has been successfully updated.' })
+  @ApiResponse({ status: 400, description: 'Invalid slug format.' })
+  @ApiResponse({ status:401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 404, description: 'Post not found.' })
+  @ApiResponse({ status: 409, description: 'Slug already used.' })
   @Patch(':id/slug')
   @UseGuards(JwtAuthGuard)
   public async updateSlug(

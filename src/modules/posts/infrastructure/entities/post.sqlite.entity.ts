@@ -20,7 +20,7 @@ export class SQLitePostEntity {
   authorId: string;
 
   @ManyToOne(() => SQLiteUserEntity)
-  @JoinColumn({ name: 'authorId' }) // Lie la relation à la colonne authorId
+  @JoinColumn({ name: 'authorId' })
   author: SQLiteUserEntity;
 
   @Column()
