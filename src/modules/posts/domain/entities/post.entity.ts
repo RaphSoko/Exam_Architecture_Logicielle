@@ -72,13 +72,17 @@ export class PostEntity {
     );
   }
 
-  public update(title?: string, content?: string) {
+  public update(title?: string, content?: string, status?: PostStatus){
     if (title) {
       this._title = new PostTitle(title);
     }
 
     if (content) {
       this._content = new PostContent(content);
+    }
+
+    if (status) {
+      this._status = status;
     }
   }
   

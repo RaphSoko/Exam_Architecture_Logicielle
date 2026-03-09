@@ -21,4 +21,12 @@ export class PostPermissions {
 
     return post.status === 'accepted';
   }
+
+  public canSubmitPost(post: PostEntity): boolean {
+    return post.status === 'draft' && post.authorId === this.userId;
+  }
+
+  public canModeratePost(post: PostEntity): boolean {
+    return this.role === 'admin' || this.role === 'moderator';
+  }
 }

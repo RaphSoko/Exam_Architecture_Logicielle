@@ -22,6 +22,8 @@ import { UpdatePostUseCase } from '../../application/use-cases/update-post.use-c
 import { GetPostBySlugUseCase } from '../../application/use-cases/find-by-slug.use-case';
 import { UpdatePostSlugUseCase } from '../../application/use-cases/update-post-slug.use-case';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ChangeStatusPostUseCase } from '../../application/use-cases/change-status-post.use-case';
+import { changeStatusPostDto } from '../../application/dtos/change-status-post.dto';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -34,6 +36,7 @@ export class PostController {
     private readonly getPostByIdUseCase: GetPostByIdUseCase,
     private readonly getPostBySlugUseCase: GetPostBySlugUseCase,
     private readonly updatePostSlugUseCase: UpdatePostSlugUseCase,
+    private readonly changeStatusPostUseCase: ChangeStatusPostUseCase,
   ) {}
 
   @ApiOperation({ summary: 'Get all posts' })
@@ -117,8 +120,32 @@ export class PostController {
     const post = await this.updatePostSlugUseCase.execute(id, newSlug, user);
     return post.toJSON();
   }
+
+  @ApiOperation({ summary: 'Change the status of a post' })
+  @ApiResponse({ status: 200, description: 'The post status has been successfully changed.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 404, description: 'Post not found.' })
+  @Patch('/status/:id')
+  @UseGuards(JwtAuthGuard)
+  public async changeStatus(
+    @Param('id') id: string,
+    @Body() status: changeStatusPostDto,
+    @Requester() user: UserEntity,
+  ) {
+    return this.changeStatusPostUseCase.execute(id, status, user);
+  }
+
+  @ApiOperation({ summary: 'Delete a post' })
+  @ApiResponse({ status: 200, description: 'The post has been successfully deleted.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 404, description: 'Post not found.' })
   @Delete(':id')
-  public async deletePost(@Param('id') id: string) {
-    return this.deletePostUseCase.execute(id);
+  @UseGuards(JwtAuthGuard)
+  public async delete(
+    @Param('id') id: string, 
+    @Requester() user: UserEntity) {
+    return this.deletePostUseCase.execute(id, user);
   }
 }

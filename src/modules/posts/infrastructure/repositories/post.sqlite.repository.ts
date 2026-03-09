@@ -27,6 +27,7 @@ export class SQLitePostRepository implements PostRepository {
   }
 
   public async updatePost(id: string, input: PostEntity): Promise<void> {
+    //TODO: modifier pour prendre en compte les tags
     await this.dataSource
       .getRepository(SQLitePostEntity)
       .update(id, input.toJSON());

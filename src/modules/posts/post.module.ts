@@ -12,6 +12,7 @@ import { PostController } from './infrastructure/controllers/post.controller';
 import { SQLitePostRepository } from './infrastructure/repositories/post.sqlite.repository';
 import { GetPostBySlugUseCase } from './application/use-cases/find-by-slug.use-case';
 import { UpdatePostSlugUseCase } from './application/use-cases/update-post-slug.use-case';
+import { ChangeStatusPostUseCase } from './application/use-cases/change-status-post.use-case';
 
 @Module({
   imports: [AuthModule, LoggingModule],
@@ -29,6 +30,7 @@ import { UpdatePostSlugUseCase } from './application/use-cases/update-post-slug.
     GetPostByIdUseCase,
     GetPostBySlugUseCase,
     UpdatePostSlugUseCase,
+    ChangeStatusPostUseCase,
   ],
 })
 export class PostModule {}
