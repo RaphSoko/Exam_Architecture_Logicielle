@@ -15,6 +15,10 @@ export class PostPermissions {
     return post.status === 'draft' && post.authorId === this.userId;
   }
 
+  public canReadAllPosts(): boolean {
+    return this.role === 'admin' || this.role === 'moderator';
+  }
+
   public canReadPost(post: PostEntity): boolean {
     if (post.authorId === this.userId) return true;
     if (this.role === 'admin' || this.role === 'moderator') return true;
@@ -28,5 +32,11 @@ export class PostPermissions {
 
   public canModeratePost(post: PostEntity): boolean {
     return this.role === 'admin' || this.role === 'moderator';
+  }
+
+  public canAddTagToPost(post: PostEntity): boolean {
+    if (post.authorId === this.userId) return true;
+    if (this.role === 'admin' || this.role === 'moderator') return true;
+    return false;
   }
 }

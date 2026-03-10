@@ -13,9 +13,12 @@ import { SQLitePostRepository } from './infrastructure/repositories/post.sqlite.
 import { GetPostBySlugUseCase } from './application/use-cases/find-by-slug.use-case';
 import { UpdatePostSlugUseCase } from './application/use-cases/update-post-slug.use-case';
 import { ChangeStatusPostUseCase } from './application/use-cases/change-status-post.use-case';
+import { TagsModule } from '../tags/tags.module';
+import { AddTagPostUseCase } from './application/use-cases/add-tag.use-case';
+import { RemoveTagPostUseCase } from './application/use-cases/remove-tag.use-case';
 
 @Module({
-  imports: [AuthModule, LoggingModule],
+  imports: [AuthModule, LoggingModule,TagsModule],
   controllers: [PostController],
   providers: [
     {
@@ -31,6 +34,8 @@ import { ChangeStatusPostUseCase } from './application/use-cases/change-status-p
     GetPostBySlugUseCase,
     UpdatePostSlugUseCase,
     ChangeStatusPostUseCase,
+    AddTagPostUseCase,
+    RemoveTagPostUseCase,
   ],
 })
 export class PostModule {}

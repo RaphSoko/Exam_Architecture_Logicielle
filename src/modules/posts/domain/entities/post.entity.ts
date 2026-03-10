@@ -1,6 +1,8 @@
 import { v4 } from 'uuid';
 import { PostContent } from '../value-objects/post-content.value-object';
 import { PostTitle } from '../value-objects/post-title.value-object';
+import { TagEntity } from 'src/modules/tags/domain/entities/tag.entity';
+import { SQLiteTagEntity } from 'src/modules/tags/infrastructure/entities/tag.sqlite.entity';
 
 export type PostStatus = 'draft' | 'waiting' | 'accepted' | 'rejected';
 
@@ -10,6 +12,7 @@ export class PostEntity {
   private _authorId: string;
   private _status: PostStatus;
   private _slug: string;
+  private _tags: TagEntity[];
 
   private constructor(
     readonly id: string,
@@ -18,16 +21,23 @@ export class PostEntity {
     authorId: string,
     status: PostStatus,
     slug: string,
+    tags: TagEntity[],
+
   ) {
     this._title = title;
     this._content = content;
     this._authorId = authorId;
     this._status = status;
     this._slug = slug;
+    this._tags = tags;
   }
 
   public get status() {
     return this._status;
+  }
+
+  public get tags(){
+    return this._tags;
   }
 
   public get authorId() {
@@ -35,6 +45,12 @@ export class PostEntity {
   }
 
   public static reconstitute(input: Record<string, unknown>) {
+    var tags: TagEntity[] = [];
+    if (input.tags) {
+      (input.tags as SQLiteTagEntity[]).forEach((element) => {
+        tags.push(TagEntity.reconstitute({ ...element }));
+      });
+    }
     return new PostEntity(
       input.id as string,
       new PostTitle(input.title as string),
@@ -42,6 +58,7 @@ export class PostEntity {
       input.authorId as string,
       input.status as PostStatus,
       input.slug as string,
+      tags as TagEntity[],
     );
   }
 
@@ -53,6 +70,7 @@ export class PostEntity {
       status: this._status,
       authorId: this._authorId,
       slug: this._slug,
+      tags: this._tags,
     };
   }
 
@@ -69,6 +87,7 @@ export class PostEntity {
       authorId,
       'draft',
       slug,
+      [],
     );
   }
 

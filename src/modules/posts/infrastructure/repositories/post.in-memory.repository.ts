@@ -43,4 +43,12 @@ export class InMemoryPostRepository implements PostRepository {
       return PostEntity.reconstitute(post);
     }
   }
+
+  public removeTag(id: string, idTag: string) {
+    throw new Error('Method not implemented.');
+  }
+  
+  public addTag(id: string, idTag: string) {
+    throw new Error('Method not implemented.');
+  }
 }

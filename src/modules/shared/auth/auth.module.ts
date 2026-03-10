@@ -8,6 +8,7 @@ import { AuthController } from './infrastructure/controllers/auth.controller';
 import { JwtAuthGuard } from './infrastructure/guards/jwt-auth.guard';
 import { SQLiteAuthRepository } from './infrastructure/repositories/auth.sqlite.repository';
 import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
+import { JwtOPtionalAuthGuard } from './infrastructure/guards/jwt-optional-auth.guard';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { JwtStrategy } from './infrastructure/strategies/jwt.strategy';
 
     JwtStrategy,
     JwtAuthGuard,
+    JwtOPtionalAuthGuard,
   ],
   exports: [JwtAuthGuard],
 })
