@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
 import { TagRepository } from '../../domain/repositories/tag.repository';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -12,7 +12,7 @@ export class DeleteTagsUseCase {
 
   public async execute(id: string, user: UserEntity): Promise<void> {
     if (!user.permissions.tags.canDelete()) {
-      throw new Error('You do not have permission to delete a tag');
+      throw new ForbiddenException('You do not have permission to delete a tag');
     }
 
     const tag = await this.tagRepository.getTagById(id);
@@ -23,7 +23,7 @@ export class DeleteTagsUseCase {
         tagId: tag.id,
       });
     } else {
-      throw new Error('Tag not found');
+      throw new NotFoundException('Tag not found');
     }
   }
 }

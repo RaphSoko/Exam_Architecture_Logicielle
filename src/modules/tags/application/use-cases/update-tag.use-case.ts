@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { LoggingService } from '../../../shared/logging/domain/services/logging.service';
 import { TagRepository } from '../../domain/repositories/tag.repository';
 import { UpdateTagDto } from '../dtos/update-tag.dto';
@@ -23,7 +23,7 @@ export class UpdateTagsUseCase {
   ): Promise<TagEntity> {
 
     if (!user.permissions.tags.canUpdate()) {
-      throw new Error('You do not have permission to update a tag');
+      throw new ForbiddenException('You do not have permission to update a tag');
     }
 
     const duplicateTag = await this.tagRepository.getTagByName(
@@ -31,7 +31,7 @@ export class UpdateTagsUseCase {
     );
 
     if (duplicateTag) {
-      throw new Error('A tag with the same name already exists');
+      throw new ConflictException('A tag with this name already exists');
     }
 
     const tag = await this.tagRepository.getTagById(id);
@@ -46,7 +46,7 @@ export class UpdateTagsUseCase {
 
       return tag;
     } else {
-      throw new Error('Tag not found');
+      throw new NotFoundException('Tag not found');
     }
   }
 }

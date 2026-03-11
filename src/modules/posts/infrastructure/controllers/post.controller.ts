@@ -48,6 +48,7 @@ export class PostController {
 
   @ApiOperation({ summary: 'Get all posts' })
   @Get()
+  @UseGuards(JwtAuthGuard)
     public async getPosts(
     @Requester() user: UserEntity,
     @Query('tags') tags?: string) {
@@ -102,6 +103,7 @@ export class PostController {
 
   @ApiOperation({ summary: 'Update an existing post' })
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   public async updatePost(
     @Param('id') id: string,
     @Body() input: UpdatePostDto,
@@ -159,8 +161,14 @@ export class PostController {
     return this.deletePostUseCase.execute(id, user);
   }
 
-  // OPERATIONS POUR LES TAGS
+  // ROUTES POUR LES TAGS
 
+  @ApiOperation({ summary: 'Add a tag to a post' })
+  @ApiResponse({ status: 200, description: 'The tag has been successfully added to the post.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 404, description: 'Post or tag not found.' })
+  @ApiResponse({ status: 409, description: 'Tag already associated with the post.' })
   @Post(':postId/tags/:tagId')
   @UseGuards(JwtAuthGuard)
   public async AddTag(
@@ -171,6 +179,11 @@ export class PostController {
     return this.addTagPostUseCase.execute(idPost, idTag, user);
   }
 
+  @ApiOperation({ summary: 'Remove a tag from a post' })
+  @ApiResponse({ status: 204, description: 'The tag has been successfully removed from the post.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 404, description: 'Post or tag not found.' })
   @Delete(':postId/tags/:tagId')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)

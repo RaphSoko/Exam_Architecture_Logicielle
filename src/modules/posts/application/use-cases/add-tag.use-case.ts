@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { LoggingService } from '../../../shared/logging/domain/services/logging.service';
 import { PostRepository } from '../../domain/repositories/post.repository';
 import { UpdatePostDto } from '../dtos/update-post.dto';
@@ -18,23 +18,23 @@ export class AddTagPostUseCase {
 
     if (post) {
       if (!user.permissions.posts.canAddTagToPost(post)) {
-        throw new Error('You do not have permission to update the tags of this post');
+        throw new ForbiddenException('You do not have permission to update the tags of this post');
       }
 
       const tag = await this.tagRepository.getTagById(tagId);
       if (tag) {
         const alreadyLinked = post.tags.some((tag) => tag.id === tagId);
         if (alreadyLinked) {
-          throw new Error('This tag is already linked to the post');
+          throw new ConflictException('This tag is already linked to the post');
         }
         await this.postRepository.addTag(id, tagId);
 
         return await this.postRepository.getPostById(id);
       } else {
-        throw new Error('Tag not found');
+        throw new NotFoundException('Tag not found');
       }
     } else {
-      throw new Error('Post not found');
+      throw new NotFoundException('Post not found');
     }
   }
 }

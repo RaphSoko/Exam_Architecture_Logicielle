@@ -16,7 +16,6 @@ export class GetPostsUseCase {
   public async execute(tagsArray: string[], user : UserEntity): Promise<PostEntity[]> {
     this.loggingService.log('GetPostsUseCase.execute');
     var tagsIds: string[] = [];
-    
     if (tagsArray.length > 0) {
       for (const tag of tagsArray) {
         var tagId = (await this.tagRepository.getTagByName(tag))?.id;

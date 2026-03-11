@@ -10,6 +10,7 @@ export class SQLitePostRepository implements PostRepository {
   constructor(private readonly dataSource: DataSource) {}
 
   public async getPosts(tagIds:string[],user : UserEntity): Promise<PostEntity[]> {
+    console.log(user.id)
     const query = this.dataSource
       .getRepository(SQLitePostEntity)
       .createQueryBuilder('post')

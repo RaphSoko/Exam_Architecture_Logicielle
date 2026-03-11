@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserEntity } from '../../../users/domain/entities/user.entity';
 import { TagRepository } from '../../domain/repositories/tag.repository';
@@ -17,13 +17,13 @@ export class CreateTagUseCase {
 
   public async execute(input: CreateTagDto, user: UserEntity): Promise<TagEntity> {
     if (!user.permissions.tags.canCreate()) {
-      throw new Error('You do not have permission to create a tag');
+      throw new ForbiddenException('You do not have permission to create a tag');
     }
 
     const duplicateTag = await this.tagRepository.getTagByName(new TagName(input.name).toString())
 
     if (duplicateTag) {
-      throw new Error('A tag with the same name already exists');
+      throw new ConflictException('A tag with the same name already exists');
     }
 
     const tag = TagEntity.create(input.name, new Date(Date.now()));
