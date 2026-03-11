@@ -9,6 +9,7 @@ import { AuthModule } from './modules/shared/auth/auth.module';
 import { DatabaseModule } from './modules/shared/database/database.module';
 import { UserModule } from './modules/users/user.module';
 import { TagsModule } from './modules/tags/tags.module';
+import { CommentModule } from './modules/comments/comments.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TagsModule } from './modules/tags/tags.module';
     PostModule,
     UserModule,
     TagsModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

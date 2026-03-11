@@ -11,6 +11,8 @@ import {
   Query,
   HttpCode,
   HttpStatus,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { Requester } from '../../../shared/auth/infrastructure/decorators/requester.decorator';
 import { JwtAuthGuard } from '../../../shared/auth/infrastructure/guards/jwt-auth.guard';
@@ -29,6 +31,10 @@ import { ChangeStatusPostUseCase } from '../../application/use-cases/change-stat
 import { changeStatusPostDto } from '../../application/dtos/change-status-post.dto';
 import { AddTagPostUseCase } from '../../application/use-cases/add-tag.use-case';
 import { RemoveTagPostUseCase } from '../../application/use-cases/remove-tag.use-case';
+import { CreateCommentUseCase } from 'src/modules/comments/application/use-cases/create-comment.use-case';
+import { GetPostCommentUseCase } from 'src/modules/comments/application/use-cases/get-comment.use-case';
+import { CreateCommentDto } from 'src/modules/comments/application/dtos/create-comment.dto';
+import { CountCommentUseCase } from '../../application/use-cases/count-comment.use-case';
 
 @ApiTags('posts')
 @Controller('posts')
@@ -44,6 +50,9 @@ export class PostController {
     private readonly changeStatusPostUseCase: ChangeStatusPostUseCase,
     private readonly addTagPostUseCase: AddTagPostUseCase,
     private readonly removeTagPostUseCase: RemoveTagPostUseCase,
+    private readonly createCommentUseCase: CreateCommentUseCase,
+    private readonly getPostCommentUseCase: GetPostCommentUseCase,
+    private readonly countCommentUseCase: CountCommentUseCase,
   ) {}
 
   @ApiOperation({ summary: 'Get all posts' })
@@ -161,7 +170,9 @@ export class PostController {
     return this.deletePostUseCase.execute(id, user);
   }
 
+
   // ROUTES POUR LES TAGS
+
 
   @ApiOperation({ summary: 'Add a tag to a post' })
   @ApiResponse({ status: 200, description: 'The tag has been successfully added to the post.' })
@@ -193,5 +204,48 @@ export class PostController {
     @Param('tagId') idTag: string,
   ) {
     return this.removeTagPostUseCase.execute(idPost, idTag, user);
+  }
+
+
+  // ROUTES POUR LES COMMENTAIRES
+
+
+  @ApiOperation({ summary: 'Create a comment on a post' })
+  @ApiResponse({ status: 201, description: 'The comment has been successfully created.' })
+  @ApiResponse({ status: 400, description: 'Invalid input data.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 404, description: 'Post not found.' })
+  @Post(':postId/comments')
+  @UseGuards(JwtAuthGuard)
+  public async AddComment(
+    @Requester() user: UserEntity,
+    @Body() input: CreateCommentDto,
+    @Param('postId') postId: string,
+  ) {
+    return this.createCommentUseCase.execute(input, user, postId);
+  }
+
+  @ApiOperation({ summary: 'Get comments of a post' })
+  @ApiResponse({ status: 200, description: 'The comments have been successfully retrieved.' })
+  @ApiResponse({ status: 404, description: 'Post not found.' })
+  @Get(':postId/comments')
+  public async getComments(
+    @Param('postId') postId: string,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('pageSize', new DefaultValuePipe(20), ParseIntPipe) pageSize: number,
+    @Query('sortBy') sortBy: string = 'createdAt',
+    @Query('order') order: string = 'desc',
+  ) {
+    return this.getPostCommentUseCase.execute(postId, page, pageSize, sortBy, order);
+  }
+
+  @ApiOperation({ summary: 'Get the number of comments of a post' })
+  @ApiResponse({ status: 200, description: 'The comment count has been successfully retrieved.' })
+  @Get(':id/comments/count')
+  public async GetCommentCount(
+    @Param('id') id: string,
+  ) {
+    return this.countCommentUseCase.execute(id);
   }
 }
