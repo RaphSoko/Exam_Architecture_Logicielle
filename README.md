@@ -7,7 +7,7 @@ The API is divided in 5 main routes, which are /posts, /tags, /comments, /users 
 
 ## Prerequisites
 
-To be able to run this project, you must have node.js downloaded on your computer, the version used to create this project was 25.5.0, try to aim for this version or a newer one.
+To be able to run this project, you must have node.js and nest js downloaded on your computer, the node version used to create this project was 25.5.0, try to aim for this version or a newer one.
 
 ## Installation
 
@@ -25,11 +25,11 @@ NODE_ENV : Example : NODE_ENV=development
 
 ## API Documentation
 
-Once the server is running with "npm run start", you can access the API documentation and see and try every endpoint. Some will need a bearer token to be used, that you can get by using the endpoint /auth/login with in the body of your request a JSON containing the username and password of the user you want to use (the token "represents" your user).
+Once the server is running with "npm run start", you can access the API documentation and see and try every endpoint by using the route "/api". Some will need a bearer token to be used, that you can get by using the endpoint /auth/login with in the body of your request a JSON containing the username and password of the user you want to use (the token "represents" your user).
 
 ## Testing 
 
-To try the different premade tests, you just have to run in the terminal the commands "npm run test" for the unit tests ( the integration tests had errors regarding compatibility between jest and the uuid version, even the one present from the start, so I didn't implement more because I could not)
+To try the different premade tests, you just have to run in the terminal the commands "npm run test" for the unit tests (the integration tests had errors regarding compatibility between jest and the uuid version, even in the initial test present from the start, so I didn't implement more because I could not)
 
 
 ## Seed data 
