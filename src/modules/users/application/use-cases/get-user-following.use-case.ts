@@ -2,6 +2,9 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { UserRepository } from "../../domain/repositories/user.repository";
 import { log } from "console";
 import { LoggingService } from "src/modules/shared/logging/domain/services/logging.service";
+import { FollowRepository } from "src/modules/follows/domain/repositories/follows.repository";
+import { FollowDto } from "../dtos/follow.dto";
+import { GetUserFollowingDto } from "../dtos/get-user-following.dto";
 
 @Injectable()
 export class GetUserFollowingUseCase {
@@ -13,7 +16,7 @@ export class GetUserFollowingUseCase {
 
   public async execute(id: string, page: number, pageSize: number): Promise<GetUserFollowingDto> {
     log('GetUserFollowingUseCase.execute');
-    const follows = await this.followRepository.getUserFollowingList(id, page, pageSize);
+    const follows = await this.followRepository.getUserFollowing(id, page, pageSize);
 
     let res = new GetUserFollowingDto()
     res.following = []

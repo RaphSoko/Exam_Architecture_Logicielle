@@ -2,6 +2,9 @@ import { Controller, Get, UseGuards, Query, DefaultValuePipe, ParseIntPipe, Patc
 import { Requester } from "src/modules/shared/auth/infrastructure/decorators/requester.decorator";
 import { JwtAuthGuard } from "src/modules/shared/auth/infrastructure/guards/jwt-auth.guard";
 import { UserEntity } from "src/modules/users/domain/entities/user.entity";
+import { GetNotificationUseCase } from "../../application/use-cases/get-notification.use-case";
+import { ReadAllNotificationsUseCase } from "../../application/use-cases/read-all-notification.use-case";
+import { ReadSingleNotificationUseCase } from "../../application/use-cases/read-one-notification.use-case";
 
 @Controller('notifications')
 export class NotificationController {

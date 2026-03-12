@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UserEntity } from "src/modules/users/domain/entities/user.entity";
 import { NotificationRepository } from "../../domain/repositories/notification.repository";
+import { ReadAllNotificationDto } from "../dtos/read-all-notification.dto";
 
 @Injectable()
 export class ReadAllNotificationsUseCase {

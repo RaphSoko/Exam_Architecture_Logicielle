@@ -1,5 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { DataSource } from "typeorm";
+import { NotificationEntity } from "../../domain/entities/notification.entity";
+import { NotificationRepository } from "../../domain/repositories/notification.repository";
+import { SQLiteNotificationEntity } from "../entities/notification.sqlite.entity";
 
 @Injectable()
 export class SQLiteNotificationRepository implements NotificationRepository {

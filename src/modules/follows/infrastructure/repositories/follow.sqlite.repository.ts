@@ -1,5 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { DataSource } from "typeorm";
+import { FollowEntity } from "../../domain/entities/follow.entity";
+import { FollowRepository } from "../../domain/repositories/follows.repository";
+import { SQLiteFollowEntity } from "../entities/follows.sqlite.entity";
 
 @Injectable()
 export class SQLiteFollowRepository implements FollowRepository {

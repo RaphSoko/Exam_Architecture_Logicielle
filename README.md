@@ -29,7 +29,7 @@ Once the server is running with "npm run start", you can access the API document
 
 ## Testing 
 
-To try the different premade tests, you just have to run in the terminal the commands "npm run test" for the unit tests and "npm run test:e2e" for the integration tests
+To try the different premade tests, you just have to run in the terminal the commands "npm run test" for the unit tests ( the integration tests had errors regarding compatibility between jest and the uuid version, even the one present from the start, so I didn't implement more because I could not)
 
 
 ## Seed data 

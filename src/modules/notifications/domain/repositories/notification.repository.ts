@@ -1,3 +1,5 @@
+import { NotificationEntity } from "../entities/notification.entity";
+
 export abstract class NotificationRepository {
   public abstract createNotification(input: NotificationEntity);
   public abstract createNotifications(input: NotificationEntity[]);
