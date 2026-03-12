@@ -107,6 +107,5 @@ export class PostEntity {
   
   public updateSlug(newSlug: string) {
     this._slug = newSlug;
-    //this._updatedAt = new Date();
  }
 }

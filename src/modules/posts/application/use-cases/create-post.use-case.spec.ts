@@ -7,6 +7,7 @@ import { PostCreatedEvent } from '../../domain/events/post-created.event';
 import { UserCannotCreatePostException } from '../../domain/exceptions/user-cannot-create-post.exception';
 import { PostRepository } from '../../domain/repositories/post.repository';
 import { CreatePostUseCase } from './create-post.use-case';
+import { find } from 'rxjs';
 
 describe('CreatePostUseCase', () => {
   let useCase: CreatePostUseCase;
@@ -16,6 +17,7 @@ describe('CreatePostUseCase', () => {
   beforeEach(() => {
     postRepository = {
       createPost: jest.fn().mockResolvedValue(undefined),
+      findBySlug: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<PostRepository>;
     eventEmitter = {
       emit: jest.fn(),
