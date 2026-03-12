@@ -32,5 +32,6 @@ import { GetUserFollowingUseCase } from './application/use-cases/get-user-follow
     GetUserFollowerUseCase,
     GetUserFollowingUseCase
   ],
+  exports: [UserRepository],
 })
 export class UserModule {}
