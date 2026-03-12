@@ -10,6 +10,8 @@ import { DatabaseModule } from './modules/shared/database/database.module';
 import { UserModule } from './modules/users/user.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { CommentModule } from './modules/comments/comments.module';
+import { FollowModule } from './modules/follows/follow.module';
+import { NotificationModule } from './modules/notifications/notification.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { CommentModule } from './modules/comments/comments.module';
     UserModule,
     TagsModule,
     CommentModule,
+    FollowModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

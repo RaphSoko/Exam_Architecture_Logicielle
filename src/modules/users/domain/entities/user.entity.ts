@@ -65,4 +65,8 @@ export class UserEntity {
   public getRole(): UserRole {
     return this._role;
   }
+
+  public getUsername(): string {
+    return this._username.toString();
+  }
 }

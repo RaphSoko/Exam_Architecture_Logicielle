@@ -6,6 +6,7 @@ import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { changeStatusPostDto } from '../dtos/change-status-post.dto';
 import { LoggingService } from 'src/modules/shared/logging/domain/services/logging.service';
 import { UserEntity } from 'src/modules/users/domain/entities/user.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 describe('ChangeStatusPostUseCase', () => {
   let useCase: ChangeStatusPostUseCase;
@@ -22,11 +23,16 @@ describe('ChangeStatusPostUseCase', () => {
       error: jest.fn(),
     };
 
+    const mockEventEmitter = {
+      emit: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ChangeStatusPostUseCase,
         { provide: PostRepository, useValue: mockRepo },
         { provide: LoggingService, useValue: mockLoggingService },
+        { provide: EventEmitter2, useValue: mockEventEmitter },
       ],
     }).compile();
 
