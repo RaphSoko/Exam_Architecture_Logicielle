@@ -3,7 +3,7 @@
 ## Project Description
 
 This repository contains the code to run a medium-like API, with the help of Postman/Bruno/ThunderClient, or any API client that you like, as there is no user interface here. 
-The API is divided in 4 main routes, which are /posts, /tags, /comments, et /notifications. You can see the detail of every endpoint available a bit later in this document.
+The API is divided in 5 main routes, which are /posts, /tags, /comments, /users and /notifications. You can see the detail of every endpoint available a bit later in this document.
 
 ## Prerequisites
 
@@ -34,6 +34,7 @@ To try the different premade tests, you just have to run in the terminal the com
 
 ## Seed data 
 
-The basic data in the database will contain 4 users, each one with a different role : "reader, writer, moderator, admin" and 4 posts written by the "writer" user, all in a different status : "draft, waiting, accepted, rejected". The username and password of each role are "username : `role`_user password : password123"
+The basic data in the database will contain 4 users, each one with a different role : "reader, writer, moderator, admin" and 4 posts written by the "writer" user, all in a different status : "draft, waiting, accepted, rejected". The username and password of each role are "username : `role`_user 
+                  password : password123"
 
 

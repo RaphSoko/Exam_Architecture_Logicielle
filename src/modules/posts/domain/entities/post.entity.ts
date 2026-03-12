@@ -108,4 +108,8 @@ export class PostEntity {
   public updateSlug(newSlug: string) {
     this._slug = newSlug;
  }
+
+ public getTitle(): string {
+  return this._title.toString();
+ }
 }

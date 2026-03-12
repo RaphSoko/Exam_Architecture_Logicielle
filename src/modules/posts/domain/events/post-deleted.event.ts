@@ -1,4 +1,6 @@
-export const PostDeleted = 'post.deleted';
-export type PostDeleted = {
+export const PostDeletedEvent = 'post.deleted';
+export type PostDeletedEventPayload = {
   postId: string;
+  postTitle: string;
+  userId: string;
 };

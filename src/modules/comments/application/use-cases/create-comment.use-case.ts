@@ -5,7 +5,7 @@ import { PostRepository } from 'src/modules/posts/domain/repositories/post.repos
 import { CommentEntity } from '../../domain/entities/comment.entity';
 import { CreateCommentDto } from '../dtos/create-comment.dto';
 import { CommentRepository } from '../../domain/repositories/comment.repository';
-import { Not } from 'typeorm';
+import { CommentCreatedEvent } from '../../domain/events/comment-created.event';
 
 @Injectable()
 export class CreateCommentUseCase {
@@ -28,6 +28,11 @@ export class CreateCommentUseCase {
     const comment = CommentEntity.create(input.content, user, postId);
 
     await this.commentService.createComment(comment);
+    this.eventEmitter.emit(CommentCreatedEvent, {
+      commentId: comment.id,
+      postId: postId,
+      authorId: user.id,
+    });
 
     return comment
   }
